@@ -1,0 +1,29 @@
+MODEL:
+  META_ARCHITECTURE: "BlendMask"
+  MASK_ON: True
+  BACKBONE:
+    NAME: "build_fcos_resnet_fpn_backbone"
+  RESNETS:
+    OUT_FEATURES: ["res3", "res4", "res5"]
+  FPN:
+    IN_FEATURES: ["res3", "res4", "res5"]
+  PROPOSAL_GENERATOR:
+    NAME: "FCOS"
+  BASIS_MODULE:
+    LOSS_ON: True
+  PANOPTIC_FPN:
+    COMBINE:
+      ENABLED: False
+  FCOS:
+    THRESH_WITH_CTR: True
+    USE_SCALE: False
+DATASETS:
+  TRAIN: ("tbox_refine_nuscene_v1.0-trainval_train_v4.1",) #("refine2_nuscene_v1.0-mini_train_with_maskv1.0_tight_box",)  #("tbox_refine2_nuscene_v1.0-mini_train_v4.00",)
+  TEST: ("tbox_refine_nuscene_v1.0-trainval_val_v1.0",) #("tbox_refine2_nuscene_v1.0-mini_val_v4.1",) 
+SOLVER:
+  IMS_PER_BATCH: 16 #16
+  BASE_LR: 0.01
+  STEPS: (40000, 60000)
+  MAX_ITER: 70000 #120000 #70000
+INPUT:
+  MIN_SIZE_TRAIN: (640, 672, 704, 736, 768, 800)

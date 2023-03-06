@@ -1,0 +1,39 @@
+MODEL:
+  META_ARCHITECTURE: "CondInst"
+  MASK_ON: True
+  BACKBONE:
+    NAME: "build_fcos_resnet_fpn_backbone"
+  RESNETS:
+    OUT_FEATURES: ["res3", "res4", "res5"]
+  FPN:
+    IN_FEATURES: ["res3", "res4", "res5"]
+  PROPOSAL_GENERATOR:
+    NAME: "FCOS"
+  FCOS:
+    THRESH_WITH_CTR: True
+    USE_SCALE: True
+  CONDINST:
+    TOPK_PROPOSALS_PER_IM: 64
+    MASK_BRANCH:
+      OUT_CHANNELS: 16
+  BOXINST:
+    ENABLED: True
+    BOTTOM_PIXELS_REMOVED: 10
+    PAIRWISE:
+      SIZE: 3
+      DILATION: 2
+      COLOR_THRESH: 0.3 
+DATASETS:
+  TRAIN: ("tbox_refine_nuscene_v1.0-trainval_train_v4.1",) # ("refine2_nuscene_v1.0-mini_train_with_maskv1.0_tight_box",)  #("tbox_refine2_nuscene_v1.0-mini_train_v4.00",)
+  TEST: ("tbox_refine_nuscene_v1.0-trainval_val_v1.0",) #("tbox_refine2_nuscene_v1.0-mini_val_v4.1",)
+SOLVER:
+  IMS_PER_BATCH: 16 #16
+  BASE_LR: 0.05 #0.05 #0.03
+  STEPS: (40000, 60000)
+  MAX_ITER: 70000 
+  # STEPS: (150000, 180000)
+  # MAX_ITER: 210000
+INPUT:
+  MIN_SIZE_TRAIN: (640, 672, 704, 736, 768, 800)
+# TEST:
+#   EVAL_PERIOD: 20000

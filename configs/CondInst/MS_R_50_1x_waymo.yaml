@@ -1,0 +1,16 @@
+_BASE_: "Base-CondInst.yaml"
+MODEL:
+  WEIGHTS: "detectron2://ImageNetPretrained/MSRA/R-50.pkl"
+  RESNETS:
+    DEPTH: 50
+DATASETS:
+  TRAIN: ("waymo_lwsis_train1.1",) #("refine2_nuscene_v1.0-mini_train_with_maskv1.0_tight_box",)  #("tbox_refine2_nuscene_v1.0-mini_train_v4.00",)
+  TEST: ("waymo_lwsis_val1.0",) #("tbox_refine2_nuscene_v1.0-mini_val_v4.1",) 
+SOLVER:
+  IMS_PER_BATCH: 16 #16
+  BASE_LR: 0.01
+  STEPS: (15000, 25000)
+  MAX_ITER: 30000 #120000 #70000
+  # STEPS: (40000, 100000)
+  # MAX_ITER: 120000
+OUTPUT_DIR: "output/condinst_MS_R_50_1x_waymo"
